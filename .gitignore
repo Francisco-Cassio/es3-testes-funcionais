@@ -1,0 +1,22 @@
+# Ambientes virtuais e dependências (proibido enviar conforme Guia do Aluno)
+.venv/
+venv/
+env/
+node_modules/
+target/
+
+# Cache Python e Pytest
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Arquivos temporários do SO e IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Banco local SQLite temporário
+*.sqlite3
+.env

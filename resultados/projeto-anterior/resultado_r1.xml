@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="8" time="50.366" timestamp="2026-11-25T19:53:53.464748-03:00" hostname="cassio"><testcase classname="trabalho2-funcionalidades.projeto-anterior.test_clinica_funcional" name="test_ct_c01_login_interno_valido" time="4.853"><failure message="AssertionError: assert 'GESTÃO INTERNA' == 'Gestão interna'&#10;  &#10;  - Gestão interna&#10;  + GESTÃO INTERNA">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="ba1e4d897b2402a0a7ae337d7c5ab0c8")&gt;
+base_url = 'http://127.0.0.1:8001'
+
+    def test_ct_c01_login_interno_valido(driver, base_url):
+        LoginClinicaPage(driver, base_url).abrir().entrar("admin_avaliador", "avaliador123")
+        painel = PainelInternoPage(driver).aguardar_carregamento()
+    
+        assert driver.current_url.endswith("/painel")
+&gt;       assert painel.titulo_secao() == "Gestão interna"
+E       AssertionError: assert 'GESTÃO INTERNA' == 'Gestão interna'
+E         
+E         - Gestão interna
+E         + GESTÃO INTERNA
+
+trabalho2-funcionalidades\projeto-anterior\test_clinica_funcional.py:40: AssertionError</failure></testcase><testcase classname="trabalho2-funcionalidades.projeto-anterior.test_clinica_funcional" name="test_ct_c02_login_invalido_exibe_alerta" time="4.725" /><testcase classname="trabalho2-funcionalidades.projeto-anterior.test_clinica_funcional" name="test_ct_c03_rota_painel_sem_login_redireciona" time="4.411" /><testcase classname="trabalho2-funcionalidades.projeto-anterior.test_clinica_funcional" name="test_ct_c04_logout_encerra_sessao" time="13.191"><failure message="selenium.common.exceptions.TimeoutException: Message: &#10;Stacktrace:&#10;&#09;chromedriver!GetHandleVerifier [0x7ff7dee1abb5+151b5]&#10;&#09;chromedriver!GetHandleVerifier [0x7ff7dee1ac10+15210]&#10;&#09;chromedriver!(No symbol) [0x7ff7de945d6d]&#10;&#09;chromedriver!(No symbol) [0x7ff7de9a1289]&#10;&#09;chromedriver!(No symbol) [0x7ff7de9a158c]&#10;&#09;chromedriver!(No symbol) [0x7ff7de9f2027]&#10;&#09;chromedriver!(No symbol) [0x7ff7de9eec0b]&#10;&#09;chromedriver!(No symbol) [0x7ff7de9937cc]&#10;&#09;chromedriver!(No symbol) [0x7ff7de9946f3]&#10;[+10 more lines; full report in element text]">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="8ab88eddbb52e3997543b6e5639ca1d9")&gt;
+base_url = 'http://127.0.0.1:8001'
+
+    def test_ct_c04_logout_encerra_sessao(driver, base_url):
+        login = LoginClinicaPage(driver, base_url).abrir().entrar("admin_avaliador", "avaliador123")
+        PainelInternoPage(driver).aguardar_carregamento()
+    
+&gt;       login.fazer_logout()
+
+trabalho2-funcionalidades\projeto-anterior\test_clinica_funcional.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+trabalho2-funcionalidades\projeto-anterior\pages\clinica_pages.py:57: in fazer_logout
+    btn = self.wait.until(EC.element_to_be_clickable(self.BOTAO_LOGOUT))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.support.wait.WebDriverWait (session="8ab88eddbb52e3997543b6e5639ca1d9")&gt;
+method = &lt;function element_to_be_clickable.&lt;locals&gt;._predicate at 0x000001E4B3DB8540&gt;
+message = ''
+
+    def until(self, method: Callable[[D], Literal[False] | T], message: str = "") -&gt; T:
+        """Wait until the method returns a value that is not False.
+    
+        Calls the method provided with the driver as an argument until the
+        return value does not evaluate to ``False``.
+    
+        Args:
+            method: A callable object that takes a WebDriver instance as an
+                argument.
+            message: Optional message for TimeoutException.
+    
+        Returns:
+            The result of the last call to `method`.
+    
+        Raises:
+            TimeoutException: If 'method' does not return a truthy value within
+                the WebDriverWait object's timeout.
+    
+        Example:
+            &gt;&gt;&gt; from selenium.webdriver.common.by import By
+            &gt;&gt;&gt; from selenium.webdriver.support.wait import WebDriverWait
+            &gt;&gt;&gt; from selenium.webdriver.support import expected_conditions as EC
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; # Wait until an element is visible on the page
+            &gt;&gt;&gt; wait = WebDriverWait(driver, 10)
+            &gt;&gt;&gt; element = wait.until(EC.visibility_of_element_located((By.ID, "exampleId")))
+            &gt;&gt;&gt; print(element.text)
+        """
+        screen = None
+        stacktrace = None
+    
+        end_time = time.monotonic() + self._timeout
+        while True:
+            try:
+                value = method(self._driver)
+                if value:
+                    return value
+            except self._ignored_exceptions as exc:
+                screen = getattr(exc, "screen", None)
+                stacktrace = getattr(exc, "stacktrace", None)
+            if time.monotonic() &gt; end_time:
+                break
+            time.sleep(self._poll)
+&gt;       raise TimeoutException(message, screen, stacktrace)
+E       selenium.common.exceptions.TimeoutException: Message: 
+E       Stacktrace:
+E       	chromedriver!GetHandleVerifier [0x7ff7dee1abb5+151b5]
+E       	chromedriver!GetHandleVerifier [0x7ff7dee1ac10+15210]
+E       	chromedriver!(No symbol) [0x7ff7de945d6d]
+E       	chromedriver!(No symbol) [0x7ff7de9a1289]
+E       	chromedriver!(No symbol) [0x7ff7de9a158c]
+E       	chromedriver!(No symbol) [0x7ff7de9f2027]
+E       	chromedriver!(No symbol) [0x7ff7de9eec0b]
+E       	chromedriver!(No symbol) [0x7ff7de9937cc]
+E       	chromedriver!(No symbol) [0x7ff7de9946f3]
+E       	chromedriver!GetHandleVerifier [0x7ff7df43b79b+635d9b]
+E       	chromedriver!GetHandleVerifier [0x7ff7df435ac6+6300c6]
+E       	chromedriver!GetHandleVerifier [0x7ff7df45bcee+6562ee]
+E       	chromedriver!GetHandleVerifier [0x7ff7dee38ffe+335fe]
+E       	chromedriver!GetHandleVerifier [0x7ff7dee4147c+3ba7c]
+E       	chromedriver!GetHandleVerifier [0x7ff7dee24d64+1f364]
+E       	chromedriver!GetHandleVerifier [0x7ff7dee24ef4+1f4f4]
+E       	chromedriver!GetHandleVerifier [0x7ff7dee07d97+2397]
+E       	KERNEL32!BaseThreadInitThunk [0x7ffae284dda7+17]
+E       	ntdll!RtlUserThreadStart [0x7ffae3639c5c+2c]
+
+.venv\Lib\site-packages\selenium\webdriver\support\wait.py:121: TimeoutException</failure></testcase><testcase classname="trabalho2-funcionalidades.projeto-anterior.test_clinica_funcional" name="test_ct_c05_cadastrar_nova_especialidade_sucesso" time="5.672" /><testcase classname="trabalho2-funcionalidades.projeto-anterior.test_clinica_funcional" name="test_ct_c06_especialidade_duplicada_case_insensitive_rejeitada" time="5.414" /><testcase classname="trabalho2-funcionalidades.projeto-anterior.test_clinica_funcional" name="test_ct_c07_paciente_filtra_horarios_por_especialidade" time="6.044" /><testcase classname="trabalho2-funcionalidades.projeto-anterior.test_clinica_funcional" name="test_ct_c08_paciente_agenda_consulta_com_sucesso" time="5.629"><failure message="AssertionError: assert 'Consulta agendada com sucesso' in 'Não é possível reservar um horário passado.'&#10; +  where 'Não é possível reservar um horário passado.' = texto_aviso()&#10; +    where texto_aviso = &lt;pages.clinica_pages.PainelPacientePage object at 0x000001E4B3D7F950&gt;.texto_aviso">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="8c8e7d61140c97bc3503f3b053a5357d")&gt;
+base_url = 'http://127.0.0.1:8001'
+
+    def test_ct_c08_paciente_agenda_consulta_com_sucesso(driver, base_url):
+        LoginClinicaPage(driver, base_url).abrir().entrar("paciente01", "SenhaForte123!")
+        painel = PainelPacientePage(driver).aguardar_carregamento()
+        assert painel.quantidade_minhas_consultas() == 0
+    
+        painel.agendar_primeiro_horario()
+    
+&gt;       assert "Consulta agendada com sucesso" in painel.texto_aviso()
+E       AssertionError: assert 'Consulta agendada com sucesso' in 'Não é possível reservar um horário passado.'
+E        +  where 'Não é possível reservar um horário passado.' = texto_aviso()
+E        +    where texto_aviso = &lt;pages.clinica_pages.PainelPacientePage object at 0x000001E4B3D7F950&gt;.texto_aviso
+
+trabalho2-funcionalidades\projeto-anterior\test_clinica_funcional.py:112: AssertionError</failure></testcase></testsuite></testsuites>

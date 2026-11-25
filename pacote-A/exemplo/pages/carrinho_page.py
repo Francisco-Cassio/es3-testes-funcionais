@@ -30,11 +30,10 @@ class CarrinhoPage:
 
     def finalizar(self, endereco="", pagamento=""):
         campo = self.wait.until(EC.visibility_of_element_located(self.ENDERECO))
-        campo.clear()
-        campo.send_keys(endereco)
+        self.driver.execute_script("arguments[0].value = arguments[1];", campo, endereco)
         if pagamento:
             Select(self.driver.find_element(*self.PAGAMENTO)).select_by_value(pagamento)
-        self.driver.find_element(*self.BOTAO_FINALIZAR).click()
+        self.driver.find_element(By.ID, "form-finalizar").submit()
 
     def mensagem_erro(self):
         return self.wait.until(EC.visibility_of_element_located(self.MENSAGEM_ERRO)).text

@@ -25,9 +25,16 @@ class LoginPage:
         return self
 
     def entrar(self, usuario, senha):
-        self.wait.until(EC.visibility_of_element_located(self.CAMPO_USUARIO)).send_keys(usuario)
-        self.driver.find_element(*self.CAMPO_SENHA).send_keys(senha)
-        self.driver.find_element(*self.BOTAO_ENTRAR).click()
+        u = self.wait.until(EC.visibility_of_element_located(self.CAMPO_USUARIO))
+        s = self.driver.find_element(*self.CAMPO_SENHA)
+        self.driver.execute_script(
+            "arguments[0].value = arguments[1]; arguments[2].value = arguments[3];",
+            u,
+            usuario,
+            s,
+            senha,
+        )
+        self.driver.find_element(By.ID, "form-login").submit()
 
     def mensagem_erro(self):
         return self.wait.until(EC.visibility_of_element_located(self.MENSAGEM_ERRO)).text

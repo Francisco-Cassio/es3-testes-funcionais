@@ -20,11 +20,15 @@ class CardapioPage:
         return self.driver.find_element(*self.USUARIO_LOGADO).text
 
     def adicionar_item(self, item_id):
-        botao = self.wait.until(EC.element_to_be_clickable((By.ID, f"add-{item_id}")))
-        botao.click()
-        # O clique recarrega a página. Esperamos o botão antigo "sumir" (ficar stale)
-        # para não clicar num elemento da página velha (StaleElementReferenceException).
-        self.wait.until(EC.staleness_of(botao))
+        qtd_antes = self.quantidade_no_carrinho()
+        form = self.wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, f"form[action='/carrinho/adicionar/{item_id}']"))
+        )
+        form.submit()
+        self.wait.until(
+            lambda d: len(d.find_elements(*self.QTD_CARRINHO)) > 0
+            and int(d.find_element(*self.QTD_CARRINHO).text) == qtd_antes + 1
+        )
         return self
 
     def quantidade_no_carrinho(self):
